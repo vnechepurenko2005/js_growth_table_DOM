@@ -8,12 +8,6 @@ const appendColumn = document.querySelector('.append-column');
 const removeColumn = document.querySelector('.remove-column');
 
 appendRow.addEventListener('click', () => {
-  if (field.rows.length === 10) {
-    appendRow.disabled = true;
-
-    return;
-  }
-
   const firstRow = field.rows[0];
   const cellsCount = firstRow.cells.length;
   const tr = document.createElement('tr');
@@ -25,46 +19,56 @@ appendRow.addEventListener('click', () => {
   }
 
   field.append(tr);
-  removeRow.disabled = false;
+
+  updateButtonStates();
 });
 
 removeRow.addEventListener('click', () => {
-  if (field.rows.length === 2) {
-    removeRow.disabled = true;
-
-    return;
-  }
-
   field.deleteRow(field.rows.length - 1);
-  appendRow.disabled = false;
+
+  updateButtonStates();
 });
 
 appendColumn.addEventListener('click', () => {
-  if (field.rows[0].cells.length === 10) {
-    appendColumn.disabled = true;
-
-    return;
-  }
-
   for (const row of field.rows) {
     const td = document.createElement('td');
 
     row.append(td);
   }
 
-  removeColumn.disabled = false;
+  updateButtonStates();
 });
 
 removeColumn.addEventListener('click', () => {
-  if (field.rows[0].cells.length === 2) {
-    removeColumn.disabled = true;
-
-    return;
-  }
-
   for (const row of field.rows) {
     row.deleteCell(row.cells.length - 1);
   }
 
-  appendColumn.disabled = false;
+  updateButtonStates();
 });
+
+function updateButtonStates() {
+  if (field.rows.length === 10) {
+    appendRow.disabled = true;
+  } else {
+    appendRow.disabled = false;
+  }
+
+  if (field.rows.length === 2) {
+    removeRow.disabled = true;
+  } else {
+    removeRow.disabled = false;
+  }
+
+  if (field.rows[0].cells.length === 10) {
+    appendColumn.disabled = true;
+  } else {
+    appendColumn.disabled = false;
+  }
+
+  if (field.rows[0].cells.length === 2) {
+    removeColumn.disabled = true;
+  } else {
+    removeColumn.disabled = false;
+  }
+}
